@@ -1,0 +1,60 @@
+CREATE TABLE Patients (
+    PatientID INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(100),
+    LastName VARCHAR(100),
+    DOB DATE,
+    Gender CHAR(1),
+    ContactNumber VARCHAR(15),
+    Address TEXT
+);
+
+
+CREATE TABLE MedicalRecords (
+    RecordID INT PRIMARY KEY AUTO_INCREMENT,
+    PatientID INT,
+    VisitDate DATE,
+    Diagnosis TEXT,
+    Treatment TEXT,
+    Prescription TEXT,
+    DoctorName VARCHAR(100),
+    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID)
+);
+
+
+CREATE TABLE Doctors (
+    DoctorID INT PRIMARY KEY AUTO_INCREMENT,
+    DoctorName VARCHAR(100),
+    Specialization VARCHAR(100),
+    ContactNumber VARCHAR(15)
+);
+
+
+CREATE TABLE Appointments (
+    AppointmentID INT PRIMARY KEY AUTO_INCREMENT,
+    PatientID INT,
+    DoctorID INT,
+    AppointmentDate DATE,
+    Purpose TEXT,
+    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID),
+    FOREIGN KEY (DoctorID) REFERENCES Doctors(DoctorID)
+);
+INSERT INTO Patients (FirstName, LastName, DOB, Gender, ContactNumber, Address)
+VALUES ('John', 'Doe', '1990-01-01', 'M', '1234567890', '123 Main St, City');
+INSERT INTO MedicalRecords (PatientID, VisitDate, Diagnosis, Treatment, Prescription, DoctorName)
+VALUES (1, '2024-09-05', 'Flu', 'Rest and fluids', 'Paracetamol', 'Dr. Smith');
+INSERT INTO Doctors (DoctorName, Specialization, ContactNumber)
+VALUES ('Dr. Smith', 'General Physician', '9876543210');
+INSERT INTO Appointments (PatientID, DoctorID, AppointmentDate, Purpose)
+VALUES (1, 1, '2024-09-10', 'Follow-up for Flu');
+SELECT * FROM Patients;
+SELECT * FROM MedicalRecords WHERE PatientID = 1;
+SELECT * FROM MedicalRecords WHERE Diagnosis = 'Flu';
+SELECT * FROM Appointments WHERE PatientID = 1 AND AppointmentDate > CURDATE();
+SELECT * FROM Doctors WHERE Specialization = 'General Physician';
+SET ContactNumber = '0987654321', Address = '456 New St, City'
+WHERE PatientID = 1;
+SET Diagnosis = 'Severe Flu', Treatment = 'Antibiotics'
+WHERE RecordID = 1;
+UPDATE Doctors
+SET ContactNumber = '1122334455'
+WHERE DoctorID = 1;11
